@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:brewing",
+    "base": {
+      "item": "minecraft:potion",
+      "data": {
+        "require": {
+          "Potion": "minecraft:awkward"
+        }
+      }
+    },
+    "ingredient": {
+      "tag": "hellzone:hellzone_ingredients"
+    },
+    "result": {
+      "item": "hellzone:potion_of_haste"
+    }
+  }
