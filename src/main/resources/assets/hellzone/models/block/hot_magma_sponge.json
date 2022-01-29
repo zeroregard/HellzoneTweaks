@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+      "all": "hellzone:block/hot_magma_sponge"
+    }
+}
