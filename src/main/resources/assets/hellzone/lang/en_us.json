@@ -2,5 +2,7 @@
 	"item.minecraft.potion.effect.haste": "Potion of Haste",
 	"item.minecraft.splash_potion.effect.haste": "Splash Potion of Haste",
 	"item.minecraft.lingering_potion.effect.haste": "Lingering Potion of Haste",
-	"item.minecraft.tipped_arrow.effect.haste": "Arrow of Haste"
+	"item.minecraft.tipped_arrow.effect.haste": "Arrow of Haste",
+	"block.hellzone.magma_sponge": "Magma Sponge",
+	"block.hellzone.hot_magma_sponge": "Hot Magma Sponge"
   }

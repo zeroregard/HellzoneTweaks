@@ -22,8 +22,12 @@ import org.slf4j.LoggerFactory;
 public class HellzoneTweaksMod implements ModInitializer {
 	public static final String MOD_ID = "hellzone";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static final Block MAGMA_SPONGE_BLOCK = new MagmaSpongeBlock(FabricBlockSettings.copy(Blocks.SPONGE), 6, 64);
-	public static final Block HOT_MAGMA_SPONGE_BLOCK = new HotMagmaSpongeBlock(FabricBlockSettings.copy(Blocks.SPONGE), MAGMA_SPONGE_BLOCK.getDefaultState());
+	public static final Block MAGMA_SPONGE_BLOCK = new MagmaSpongeBlock(FabricBlockSettings.copy(Blocks.STONE), 1, 27);
+	public static final Block HOT_MAGMA_SPONGE_BLOCK = new HotMagmaSpongeBlock(FabricBlockSettings.copy(Blocks.STONE), MAGMA_SPONGE_BLOCK.getDefaultState());
+
+	public static void Log(Object object) {
+		LOGGER.info(object.toString());
+	}
 
 	@Override
 	public void onInitialize() {
@@ -34,7 +38,7 @@ public class HellzoneTweaksMod implements ModInitializer {
 	private void addHastePotionFeature() {
 		var hastePotion = new HastePotion();
 		Registry.register(Registry.POTION, new Identifier(MOD_ID, "potion_of_haste"), hastePotion);	
-		BrewingRecipeRegistryMixin.invokeRegisterPotionRecipe(Potions.AWKWARD, Items.AMETHYST_SHARD,hastePotion);
+		BrewingRecipeRegistryMixin.invokeRegisterPotionRecipe(Potions.AWKWARD, Items.AMETHYST_SHARD, hastePotion);
 	}
 
 	private void addMagmaSpongeFeature() {
@@ -43,7 +47,12 @@ public class HellzoneTweaksMod implements ModInitializer {
 		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "magma_sponge"), MAGMA_SPONGE_BLOCK);
 		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "hot_magma_sponge"), HOT_MAGMA_SPONGE_BLOCK);
 		// add the items
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "magma_sponge"), new BlockItem(MAGMA_SPONGE_BLOCK, new FabricItemSettings().group(ItemGroup.MISC)));
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "hot_magma_sponge"), new BlockItem(HOT_MAGMA_SPONGE_BLOCK, new FabricItemSettings().group(ItemGroup.MISC)));
+		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "magma_sponge"), new BlockItem(MAGMA_SPONGE_BLOCK, new FabricItemSettings()
+			.group(ItemGroup.BUILDING_BLOCKS)
+			.fireproof()));
+		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "hot_magma_sponge"), new BlockItem(HOT_MAGMA_SPONGE_BLOCK, new FabricItemSettings()
+			.group(ItemGroup.BUILDING_BLOCKS)
+			.maxCount(1)
+			.fireproof()));
 	}
 }
