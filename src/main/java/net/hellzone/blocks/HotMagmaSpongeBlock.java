@@ -64,37 +64,39 @@ public class HotMagmaSpongeBlock extends Block {
     private void convertToColdMagmaSponge(BlockState state, World world, BlockPos pos) {
         world.setBlockState(pos, originalBlock, 3);
         world.syncWorldEvent(2009, pos, 0);
-        world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, (1.0F + world.getRandom().nextFloat() * 0.2F) * 0.7F);
+        world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0F,
+                (1.0F + world.getRandom().nextFloat() * 0.2F) * 0.7F);
     }
 
     public List<ItemStack> getDroppedStacks(BlockState state, Builder builder) {
         List<ItemStack> stacks = super.getDroppedStacks(state, builder);
         for (ItemStack stack : stacks) {
             stack.getOrCreateNbt().putInt("lava_absorbed", state.get(LAVA_ABSORBED).intValue());
-          }
+        }
         return stacks;
-     }
+    }
 
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
+            BlockHitResult hit) {
         var stack = player.getMainHandStack();
-        if(stack.getItem() == Items.BUCKET) {
+        if (stack.getItem() == Items.BUCKET) {
             // offer lava bucket, remove a bucket from that stack
             player.getInventory().offerOrDrop(new ItemStack(Items.LAVA_BUCKET, 1));
             stack.setCount(stack.getCount() - 1);
-        
+
             // update lava count and possibly go back to the cold sponge
             var lavaAbsorbedValue = state.get(LAVA_ABSORBED).intValue() - 1;
-            if(lavaAbsorbedValue < 0) { // crash prevention
+            if (lavaAbsorbedValue < 0) { // crash prevention
                 lavaAbsorbedValue = 0;
             }
             world.setBlockState(pos, state.with(LAVA_ABSORBED, lavaAbsorbedValue));
-            if(lavaAbsorbedValue == 0) {
+            if (lavaAbsorbedValue == 0) {
                 convertToColdMagmaSponge(state, world, pos);
             }
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
-     }
+    }
 
     @Environment(EnvType.CLIENT)
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
