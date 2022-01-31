@@ -50,7 +50,6 @@ public class MagmaSpongeBlock extends Block {
 
     protected void update(BlockState state, World world, BlockPos pos, boolean replacedLava) {
         lavaAbsorbedCount = LavaHelper.absorbLava(world, pos, range, absorbAmount) + (replacedLava ? 1 : 0);
-        System.out.println(lavaAbsorbedCount);
         if (lavaAbsorbedCount > 0) {
             world.setBlockState(pos, hotSponge.getDefaultState().with(LAVA_ABSORBED, lavaAbsorbedCount), 2);
             world.syncWorldEvent(2001, pos, Block.getRawIdFromState(Blocks.LAVA.getDefaultState()));
