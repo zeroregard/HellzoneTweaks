@@ -6,6 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -14,7 +15,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
-import net.minecraft.loot.context.LootContext.Builder;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.ActionResult;
@@ -24,7 +25,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-import java.util.List;
 import java.util.Random;
 
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +45,7 @@ public class HotMagmaSpongeBlock extends Block {
     }
 
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        var lavaAbsorbedValue = stack.getOrCreateNbt().getInt("lava_absorbed");
+        int lavaAbsorbedValue = stack.getSubNbt("BlockStateTag").getInt("lava_absorbed");
         world.setBlockState(pos, state.with(LAVA_ABSORBED, lavaAbsorbedValue));
     }
 
@@ -68,12 +68,19 @@ public class HotMagmaSpongeBlock extends Block {
                 (1.0F + world.getRandom().nextFloat() * 0.2F) * 0.7F);
     }
 
-    public List<ItemStack> getDroppedStacks(BlockState state, Builder builder) {
-        List<ItemStack> stacks = super.getDroppedStacks(state, builder);
-        for (ItemStack stack : stacks) {
-            stack.getOrCreateNbt().putInt("lava_absorbed", state.get(LAVA_ABSORBED).intValue());
+    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (!player.isCreative()) {
+            ItemStack itemStack = new ItemStack(this);
+            NbtCompound nbtCompound = new NbtCompound();
+            nbtCompound.putInt("lava_absorbed", state.get(LAVA_ABSORBED).intValue());
+            itemStack.setSubNbt("BlockStateTag", nbtCompound);
+
+            ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
+            itemEntity.setToDefaultPickupDelay();
+            world.spawnEntity(itemEntity);
         }
-        return stacks;
+
+        super.onBreak(world, pos, state, player);
     }
 
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
