@@ -85,7 +85,7 @@ public class HotMagmaSpongeBlock extends Block {
             stack.setCount(stack.getCount() - 1);
 
             // update lava count and possibly go back to the cold sponge
-            var lavaAbsorbedValue = state.get(LAVA_ABSORBED).intValue() - 1;
+            int lavaAbsorbedValue = state.get(LAVA_ABSORBED).intValue() - 1;
             if (lavaAbsorbedValue < 0) { // crash prevention
                 lavaAbsorbedValue = 0;
             }
