@@ -1,0 +1,12 @@
+{
+    "entity.minecart.inside": {
+        "sounds": [
+            "minecart_inside"
+        ]
+    },
+    "entity.minecart.rolling": {
+        "sounds": [
+            "minecart_rolling"
+        ]
+    }
+}
