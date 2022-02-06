@@ -15,3 +15,5 @@ Note that this is a bit of a 'Frankenstein' codebase in that I copied some code 
 
 ## Tweaks/fixes
 - Minecart sound lowered to 50% volume
+- Crafting polished deepslate from deepslate is now possible
+    - In vanilla Minecraft you must used cobbled deepslate, rendering deepslate on its own pretty useless unless you mine it into the cobbled version manually
